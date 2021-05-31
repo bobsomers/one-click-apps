@@ -1,0 +1,38 @@
+captainVersion: 4
+services:
+  '$$cap_appname':
+    image: ngoduykhanh/wireguard-ui:$$cap_version
+    ports:
+      - 5000:5000
+    volumes:
+      - '$$cap_appname-data:/app/db'
+      - '$$cap_wireguard_config_dir:/etc/wireguard'
+    caproverExtra:
+      containerHttpPort: '5000'
+caproverOneClickApp:
+  variables:
+    - id: '$$cap_version'
+      label: WireGuard UI Version
+      defaultValue: latest
+      description: Check out their Docker page for the valid tags https://hub.docker.com/r/ngoduykhanh/wireguard-ui/tags
+      validRegex: "/^([^\\s^\\/])+$/"
+    - id: '$$cap_wireguard_config_dir'
+      label: WireGuard Config Directory
+      defaultValue: '/etc/wireguard'
+      description: The directory on the host which contains WireGuard configs to manage
+  instructions:
+    start: |-
+      WireGuard UI is a web UI for managing WireGuard clients and configurations. It generates
+      configurations in a host-mounted directory and systemd unit files on the host reload WireGuard
+      when the configuration is updated.
+
+      More details: https://github.com/ngoduykhanh/wireguard-ui
+    end: |-
+      WireGuard has been successfully deployed! Make sure to install and enable systemd units
+      on the host to restart WireGuard when the configurations change.
+
+      See the GitHub repo for more information: https://github.com/ngoduykhanh/wireguard-ui
+  displayName: Wireguard UI
+  isOfficial: true
+  description: A web UI for managing WireGuard clients and configuration.
+  documentation: See https://github.com/ngoduykhanh/wireguard-ui
